@@ -3,6 +3,7 @@ import {Col, Container, Row} from 'reactstrap'
 import ModalForm from './Components/Modals/Modal'
 import DataTable from './Components/Tables/DataTable'
 import {CSVLink} from "react-csv"
+import CrudService from "./Services/CrudService";
 
 class App extends Component {
   state = {
@@ -10,7 +11,7 @@ class App extends Component {
   }
 
   getItems() {
-    fetch('http://localhost:3001/crud')
+    CrudService()
       .then(response => response.json())
       .then(items => this.setState({items}))
       .catch(err => console.log(err))
@@ -28,7 +29,7 @@ class App extends Component {
       // destructure all items from beginning to the indexed item
       ...this.state.items.slice(0, itemIndex),
       // add the updated item to the array
-      item,
+      {...this.state.items[itemIndex], ...item},
       // add the rest of the items to the array from the index after the replaced item
       ...this.state.items.slice(itemIndex + 1)
     ]

@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import {Button, Table} from 'reactstrap';
 import ModalForm from '../Modals/Modal'
+import CrudService from "../../Services/CrudService";
 
 class DataTable extends Component {
 
   deleteItem = id => {
     let confirmDelete = window.confirm('Delete item forever?')
     if (confirmDelete) {
-      fetch('http://localhost:3001/crud', {
+      CrudService('', {
         method: 'delete',
         headers: {
           'Content-Type': 'application/json'

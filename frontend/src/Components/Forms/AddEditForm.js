@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Form, FormGroup, Input, Label} from 'reactstrap';
+import CrudService from "../../Services/CrudService";
 
 class AddEditForm extends React.Component {
   state = {
@@ -18,24 +19,25 @@ class AddEditForm extends React.Component {
 
   submitFormAdd = e => {
     e.preventDefault()
-    fetch('http://localhost:3001/crud', {
+    const data = {
+      first: this.state.first,
+      last: this.state.last,
+      email: this.state.email,
+      phone: this.state.phone,
+      location: this.state.location,
+      hobby: this.state.hobby
+    };
+    CrudService('', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        first: this.state.first,
-        last: this.state.last,
-        email: this.state.email,
-        phone: this.state.phone,
-        location: this.state.location,
-        hobby: this.state.hobby
-      })
+      body: JSON.stringify(data)
     })
       .then(response => response.json())
       .then(item => {
         if (Array.isArray(item)) {
-          this.props.addItemToState(item[0])
+          this.props.addItemToState({...item[0]})
           this.props.toggle()
         } else {
           console.log('failure')
@@ -46,7 +48,7 @@ class AddEditForm extends React.Component {
 
   submitFormEdit = e => {
     e.preventDefault()
-    fetch('http://localhost:3001/crud', {
+    CrudService('', {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'
